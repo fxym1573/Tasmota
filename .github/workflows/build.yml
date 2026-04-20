@@ -7,15 +7,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Build firmware
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y python3 python3-pip
-          pip3 install platformio
-          pio run -e tasmota-lite
-      - name: Upload firmware
-        uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install PlatformIO
+        run: pip install -U platformio
+
+      - name: Build Tasmota Lite
+        run: pio run -e tasmota-lite
+
+      - name: Upload Firmware
+        uses: actions/upload-artifact@v4
         with:
           name: tasmota-lite
           path: .pio/build/tasmota-lite/firmware.bin
