@@ -13,7 +13,6 @@
 #define MQTT_PASS       "64f296db08d24d4e91a14fbf9001b320"
 #define MQTT_TOPIC      "pc001"
 
-// 适配巴法云原生协议
 #define MQTT_FULLTOPIC  "%topic%"
 #define MQTT_BUTTON_RETAIN 0
 
@@ -24,33 +23,34 @@
 #define USER_TEMPLATE "{\"NAME\":\"PC-CTRL\",\"GPIO\":[0,0,0,0,32,289,0,0,290,291,0,0,225,226,1,0],\"FLAG\":0,\"BASE\":18}"
 
 // --------------------------
-// 功能
+// 功能开启
 // --------------------------
 #define USE_RULES 1
 #define USE_SWITCHES 1
 #define USE_OTA 1
 #define USE_OTA_FALLBACK 1
+#define USE_SERIAL_BRIDGE 1
 
+// 关闭无用功能
 #undef USE_RF
 #undef USE_IR_REMOTE
 #undef USE_DOMOTICZ
 #undef USE_HOME_ASSISTANT
 
 // --------------------------
-// 【最终完整版规则】
-// ON = 开机
-// OFF = 关机
-// restart = 重启
-// upgrade xxx.bin = OTA远程升级
+// 巴法云标准指令 + 升级日志打印
 // --------------------------
 #define USER_RULE1 \
 "ON MQTT#Received=ON DO Backlog Power1 1; Delay 5; Power1 0 ENDON " \
 "ON MQTT#Received=OFF DO Backlog Power1 1; Delay 5; Power1 0 ENDON " \
 "ON MQTT#Received=restart DO Backlog Power2 1; Delay 5; Power2 0 ENDON " \
+"ON MQTT#Received=update DO Backlog SerialSend start update; OTA http://bin.bemfa.com/b/223505/1BcNjRmMjk2ZGIwOGQyNGQ0ZTkxYTE0ZmJmOTAwMWIzMjA=CZOKoZRmLb001.bin ENDON " \
 "ON System#Boot DO Backlog Delay 2; Power1 %Switch1% ENDON " \
 "ON Switch1#State DO Publish %topic% %value% ENDON " \
-"ON MQTT#Received~^upgrade DO OTA %value% ENDON "
+"ON OTA#Started DO SerialSend CALLBACK: HTTP update process started ENDON " \
+"ON OTA#Progress DO SerialSend CALLBACK: HTTP update process at %value% bytes ENDON " \
+"ON OTA#Finished DO SerialSend CALLBACK: HTTP update process finished ENDON " \
+"ON OTA#Error DO SerialSend CALLBACK: HTTP update fatal error code %value% ENDON "
 
 #define USER_RULE1_ON 1
-
 #define SWITCH_MODE1 1
