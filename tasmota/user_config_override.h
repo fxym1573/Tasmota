@@ -5,7 +5,7 @@
 #define WIFI_SOFT_AP 1
 
 // --------------------------
-// 巴法云 MQTT
+// 巴法云 MQTT（你提供的UID已填好）
 // --------------------------
 #define MQTT_HOST       "bemfa.com"
 #define MQTT_PORT       9501
@@ -38,9 +38,9 @@
 
 // --------------------------
 // 【核心】巴法云指令规则
-// ON   = 开机
-// OFF  = 关机
-// restart  = 重启
+// ON      = 开机  (IO12)
+// OFF     = 关机  (IO12)
+// restart = 重启  (IO13)
 // --------------------------
 #define USER_RULE1 \
 "ON MQTT#Received=ON DO Backlog Power1 1; Delay 5; Power1 0 ENDON " \
