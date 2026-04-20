@@ -8,9 +8,9 @@
 // 巴法云 MQTT
 // --------------------------
 #define MQTT_HOST       "bemfa.com"
-#define MQTT_PORT       1888
-#define MQTT_USER       "你的巴法云UID"
-#define MQTT_PASS       "你的巴法云UID"
+#define MQTT_PORT       9501
+#define MQTT_USER       "64f296db08d24d4e91a14fbf9001b320"
+#define MQTT_PASS       "64f296db08d24d4e91a14fbf9001b320"
 #define MQTT_TOPIC      "pc001"
 
 // 适配巴法云原生协议
